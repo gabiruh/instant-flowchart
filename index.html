@@ -1,0 +1,104 @@
+<html>
+
+  <head>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="lib/dagre-d3.js"></script>
+    <script src="src/grammar.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+
+    <style id="css">
+      /* This sets the color for "TK" nodes to a light blue green. */
+
+      body {
+
+	margin: 0 auto;
+	color: #333;
+	font-weight: 300;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
+      }
+
+      h1 {
+	font-size: 3em;
+	font-weight: 300;
+      }
+
+      h2 {
+	font-size: 1.5em;
+	font-weight: 300;
+      }
+
+      section {
+	margin-bottom: 3em;
+      }
+
+      section p {
+	text-align: justify;
+      }
+
+      svg {
+	height: 100%;
+	/* border: 1px solid #ccc;
+	   overflow: hidden;
+	   margin: 0 auto; */
+      }
+
+      pre {
+	border: 1px solid #ccc;
+      }
+      
+      g.type-TK > rect {
+	fill: #00ffd0;
+      }
+
+      text {
+	font-weight: 300;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
+	font-size: 14px;
+      }
+
+      .node {
+	stroke: #999;
+	fill: #fff;
+	stroke-width: 1.5px;
+      }
+
+      .edgePath path {
+	stroke: #333;
+	stroke-width: 1.5px;
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <div class="container-fluid">
+
+      <div class="row">
+	<div class="col-md-6">
+	  <div class="panel panel-default">
+	    <div class="panel-body">
+	      <textarea  id="code" class="form-control" rows=30"></textarea>
+	    </div>
+	  </div>
+	</div>
+
+	<div class="col-md-6">
+	  <div class="panel panel-default">
+	    <div id="chart" class="panel-body ">
+	    </div>
+	  </div>
+	</div>
+
+      </div>
+    </div>
+  </body>
+
+
+  <script src="src/chart.js"></script>
+
+</html>
