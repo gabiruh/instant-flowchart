@@ -52,7 +52,8 @@ var grapher = {
     node.guid = node.guid || guid();
     graph.setNode(node.guid, {
       label: node.content,
-      class: node.type
+      class: node.type,
+      shape: 'ellipse'
     });
     return node;
   },
@@ -68,52 +69,75 @@ var grapher = {
     node.guid = node.guid || guid();
     graph.setNode(node.guid, {
       label: node.content,
-      class: node.type
+      class: node.type,
+      shape: 'rect'
     });
     return node;
   },
   condition: function(graph, node) {
     node.guid = node.guid || guid();
     graph.setNode(node.guid, {
-      label: node.test,
+      label: node.test + '?',
       class: node.type,
       shape: 'diamond'
     });
-    // console.log('block', node.block);
-//    graph.setEdge(node.guid, traverse(graph, node.block).guid);
-    return node;
+    var last = traverse(graph, [null].concat(node.block));
+    graph.setEdge(node.guid, node.block[0].guid, { label: 'Sim'} );
+
+    var tail = [node, last];
+    if(node.alternate){
+      var last_alternative  = traverse(graph, [null].concat(node.alternate));
+      graph.setEdge(node.guid, node.alternate[0].guid, { label: 'Sim'} );
+      tail.push(last_alternative);
+
+    }
+    return tail;
 
   },
   loop: function(graph, node) {
     node.guid = node.guid || guid();
     graph.setNode(node.guid, {
-      label: node.test,
-      class: node.type
+      label: node.test + '?',
+      class: node.type,
+      shape: 'diamond'
     });
-    return node;
+
+    var last = traverse(graph, [null].concat(node.block));
+    graph.setEdge(node.guid, node.block[0].guid, { label: 'Sim'});
+    graph.setEdge(last.guid, node.guid);
+    return [node, last];
+    
+//    return node;
   },
   comment: function(graph, node) {}
 };
 
 
 function visit(graph, node, visitor) {
+  if (!node) return;
   if (!visitor) visitor = grapher;
   return visitor[node.type].call(visitor, graph, node);
 }
 
 function grapher(tree) {}
 
-function traverse(g, tree){
-  return _.reduce(tree, function(a, b) {
-    console.log(a, b);
-    var from = visit(g, a);
-    var to = visit(g, b);
+function isPlainObject(o) {
+  return !_.isArray(o) && _.isObject(o);
+}
+function traverse(g, tree) {
+  return _.reduce(tree, function(from, to) {
 
-    if(from && to) g.setEdge(from.guid, to.guid);
+    if(isPlainObject(from)) from = visit(g, from);
+    if(isPlainObject(to)) to = visit(g, to);
 
-    return b || a;
+    if(_.isArray(to) ) to = to[0];
+
+    if (to)
+      _.each([null].concat(from), (_from) => !!_from && g.setEdge(_from.guid, to.guid));
+
+    return to;
   });
-  
+
 }
 
 function render(tree) {
@@ -124,13 +148,8 @@ function render(tree) {
     });
 
   traverse(g, tree);
+  console.log(g);
 
-  // _.reduce(tree, function(a, b) {
-  //   g.setEdge(visit(g, a).guid, visit(g, b).guid);
-  //   return b;
-  // });
-
-//  console.log(g.edges());
   renderer(d3.select("#chart svg g"), g);
 }
 
