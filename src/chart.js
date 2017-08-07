@@ -82,12 +82,12 @@ var grapher = {
       shape: 'diamond'
     });
     var last = traverse(graph, [null].concat(node.block));
-    graph.setEdge(node.guid, node.block[0].guid, { label: 'Sim'} );
+    graph.setEdge(node.guid, node.block[0].guid, { label: 'Yes'} );
 
     var tail = [node, last];
     if(node.alternate){
       var last_alternative  = traverse(graph, [null].concat(node.alternate));
-      graph.setEdge(node.guid, node.alternate[0].guid, { label: 'Sim'} );
+      graph.setEdge(node.guid, node.alternate[0].guid, { label: 'No'} );
       tail.push(last_alternative);
 
     }
@@ -103,7 +103,7 @@ var grapher = {
     });
 
     var last = traverse(graph, [null].concat(node.block));
-    graph.setEdge(node.guid, node.block[0].guid, { label: 'Sim'});
+    graph.setEdge(node.guid, node.block[0].guid, { label: 'Yes'});
     graph.setEdge(last.guid, node.guid);
     return [node, last];
     
